@@ -11,6 +11,9 @@ import { Demo } from "./pages/demo.js";
 import { Single } from "./pages/single.js";
 import { Home } from "./pages/Home.jsx";
 import { Error404 } from "./pages/Error404.jsx";
+import { Login } from "./pages/Login.jsx";
+import { TodoList } from "./pages/TodoList.jsx";
+import { ContactList } from "./pages/ContactList.jsx";
 
 //create your first component
 const Layout = () => {
@@ -27,6 +30,9 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<TodoList />} path="/list" />
+                        <Route element={<ContactList />} path="/contact" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404 />} path="*" />
