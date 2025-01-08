@@ -1,21 +1,78 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			contactos: [],
+			contactoParaEditar: {},
+			hostContacto: 'https://playground.4geeks.com/contact',
+    		slug: 'AndresVillani00'
 		},
 		actions: {
+			getContactos: async () => {
+				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}`;
+				const options = {
+					method: 'GET'
+				};
+				
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+
+				const datos = await response.json();
+				setStore({ contactos: datos.contacts })
+			},
+			addContacto: async (dataToSend) => {
+				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}/contacts`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+			
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+
+				getActions().getContactos();
+			},
+			editarContacto: async (dataToEdit) => {
+				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}/contacts/${getStore().contactoParaEditar.id}`;
+				const options = {
+					method: 'PUT',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToEdit)
+				};
+			
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+		
+				getActions().getContactos();
+			},
+			deleteContactos: async (idContacto) => {
+				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}/contacts/${idContacto}`;
+				const options = {
+					method: 'DELETE'
+				};
+				
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+		
+				getActions().getContactos();
+			},
+
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");

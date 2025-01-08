@@ -16,6 +16,11 @@ export const Navbar = () => {
 				<div className="collapse navbar-collapse text-end" id="navbarSupportedContent">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 					<li className="nav-item">
+						<Link to="/characters" className="text-decoration-none">
+							<span className="navbar-brand mb-0 h1 text-secondary">Characters</span>
+						</Link>
+					</li>
+					<li className="nav-item">
 						<Link to="/list" className="text-decoration-none">
 							<span className="navbar-brand mb-0 h1 text-secondary">To do List</span>
 						</Link>
