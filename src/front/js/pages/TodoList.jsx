@@ -108,8 +108,8 @@ export const TodoList = () => {
 
     return (
         <div className="Container">
-            <h1 className="text-center">Todo List con Fetch</h1>
-                <div className="container my-5 p-5">
+            <div className="container my-5 p-5 bg-dark text-white">
+                <h1 className="text-center">Todo List con Fetch</h1>
                     {
                     form === true ?
                     <form onSubmit={handleSubmitTarea}>
