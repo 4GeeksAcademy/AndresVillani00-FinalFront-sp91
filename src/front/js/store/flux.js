@@ -1,12 +1,46 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			personajes: [],
+			idPersonaje: '',
+			detallePersonaje: {},
 			contactos: [],
 			contactoParaEditar: {},
+			hostStarWars: 'https://www.swapi.tech/api',
 			hostContacto: 'https://playground.4geeks.com/contact',
     		slug: 'AndresVillani00'
 		},
 		actions: {
+			getPersonajes: async () => {
+				const uri = `${getStore().hostStarWars}/people`;
+				const options = {
+					method: 'GET'
+				};
+				
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+		
+				const datos = await response.json();
+				setStore({ personajes: datos.results });
+			},
+			getDetallePersonaje: async () => {
+				const uri = `${getStore().hostStarWars}/people/${getStore().idPersonaje}`;
+				const options = {
+					method: 'GET'
+				};
+				
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+		
+				const datos = await response.json();
+				setStore({ detallePersonaje: datos.result.properties });
+			},
 			getContactos: async () => {
 				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}`;
 				const options = {
@@ -71,11 +105,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 		
 				getActions().getContactos();
-			},
-
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
 			},
 
 			getMessage: async () => {
