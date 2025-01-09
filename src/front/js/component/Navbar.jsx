@@ -1,18 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import starWars from "../../img/LogoStarWars.png";
+import { Context } from "../store/appContext.js";
 
 export const Navbar = () => {
+	const { store, actions } = useContext(Context);
+	const navigate = useNavigate();
+
+	const handleLogin = () => {
+		if(store.isLogged) {
+			actions.setIsLogged(false);
+			actions.setUser({});
+			navigate('/');
+		} else {
+			navigate('/login');
+		}
+	}
+
 	return (
 		<nav className="navbar navbar-expand-lg bg-dark">
 		<div className="container-fluid">
 			<div className="col col-md-4">
-				<img src={starWars} className="img-fluid rounded-start w-25" alt="starWars" />
+				<Link to="/" className="text-decoration-none">
+					<img src={starWars} className="img-fluid rounded-start w-25" alt="starWars" />
+				</Link>
 			</div>
 			<div className="d-flex">
-				<Link to="/" className="text-decoration-none">
-					<span className="navbar-brand mb-0 h1 text-secondary">Home</span>
-				</Link>
 				<div className="collapse navbar-collapse text-end" id="navbarSupportedContent">
 					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 					<li className="nav-item">
@@ -30,17 +43,27 @@ export const Navbar = () => {
 							<span className="navbar-brand mb-0 h1 text-secondary">Starships</span>
 						</Link>
 					</li>
-					<li className="nav-item">
-						<Link to="/list" className="text-decoration-none">
-							<span className="navbar-brand mb-0 h1 text-secondary">To do List</span>
-						</Link>
-					</li>
-					<li className="nav-item">
-						<Link to="/contact" className="text-decoration-none">
-							<span className="navbar-brand mb-0 h1 text-secondary">Contact List</span>
-						</Link>
-					</li>
+					{
+						store.isLogged ?
+						<div className="d-flex">
+							<li className="nav-item">
+								<Link to="/list" className="text-decoration-none">
+									<span className="navbar-brand mb-0 h1 text-secondary">To do List</span>
+								</Link>
+							</li>
+							<li className="nav-item">
+								<Link to="/contact" className="text-decoration-none">
+									<span className="navbar-brand mb-0 h1 text-secondary">Contact List</span>
+								</Link>
+							</li>
+						</div>
+						:
+						<div></div>
+					}
 					</ul>
+					<button onClick={() => handleLogin()} className="btn btn-outline-success">
+						{store.isLogged ? 'Logout' : 'Login'}
+					</button>
 				</div>
 			</div>
 		</div>
