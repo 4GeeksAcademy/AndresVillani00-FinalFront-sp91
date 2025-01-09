@@ -3,12 +3,20 @@ import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 
 export const Characters = () => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const navigate = useNavigate();
 
     const handleDetail = (idPersonaje) => {
         store.idPersonaje = idPersonaje;
         navigate('/characters/detail')
+    }
+
+    const handleImagen = (event) => {
+        event.target.src = 'https://starwars-visualguide.com/assets/img/big-placeholder.jpg'
+    }
+
+    const handleFavorito = (favoritoActual) => {
+        actions.addFavorito(favoritoActual);
     }
 
     return (
@@ -20,12 +28,12 @@ export const Characters = () => {
                         {store.personajes.map((item) =>
                             <div className="col my-5">
                                 <div className="card" style={{width: '12rem'}}>
-                                    <img src={'https://starwars-visualguide.com/assets/img/characters/'+item.uid+'.jpg'} className="card-img-top" alt="imagen" />
+                                    <img src={'https://starwars-visualguide.com/assets/img/characters/'+item.uid+'.jpg'} className="card-img-top" alt="imagen" onError={handleImagen} />
                                     <div className="card-body">
                                         <h6 className="card-title">{item.name}</h6>
                                         <div className="d-flex justify-content-between">
-                                            <button onClick={() => handleDetail(item.uid)} className="btn btn-secondary">Details</button>
-                                            <button type="button" className="btn btn-outline-warning"><i className="fa-regular fa-heart"></i></button>
+                                            <button onClick={() => handleDetail(item.uid)} type="button" className="btn btn-secondary">Details</button>
+                                            <button onClick={() => handleFavorito(item.name)} type="button" className="btn btn-outline-warning"><i className="fa-regular fa-heart"></i></button>
                                         </div>
                                     </div>
                                 </div>

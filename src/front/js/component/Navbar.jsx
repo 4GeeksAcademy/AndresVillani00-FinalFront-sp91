@@ -17,6 +17,10 @@ export const Navbar = () => {
 		}
 	}
 
+	const handleFavorito = (favoritoEliminado) => {
+		actions.deleteFavorito(favoritoEliminado);
+	}
+
 	return (
 		<nav className="navbar navbar-expand-lg bg-dark">
 		<div className="container-fluid">
@@ -61,6 +65,16 @@ export const Navbar = () => {
 						<div></div>
 					}
 					</ul>
+					<div class="dropdown me-2">
+						<button class="btn btn-secondary dropdown-toggle text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Favoritos <i className="fa-regular fa-heart me-2"></i>
+						</button>
+						<ul class="dropdown-menu">
+							{store.favoritos.map((item) =>
+								<li className="list-group-item">{item} <i className="fa-solid fa-trash-can text-danger" onClick={() => handleFavorito(item)}></i></li>
+							)}
+						</ul>
+					</div>
 					<button onClick={() => handleLogin()} className="btn btn-outline-success">
 						{store.isLogged ? 'Logout' : 'Login'}
 					</button>

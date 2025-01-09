@@ -13,6 +13,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			naves: [],
 			idNave: '',
 			detalleNave: {},
+			favoritos: [],
 			contactos: [],
 			contactoParaEditar: {},
 			hostStarWars: 'https://www.swapi.tech/api',
@@ -26,12 +27,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ usuario: usuarioActual })
 			},
 			getPersonajes: async () => {
-				const uri = `${getStore().hostStarWars}/people`;
-				const options = {
-					method: 'GET'
-				};
-				
-				const response = await fetch(uri, options);
+				const uri = `${getStore().hostStarWars}/people`;	
+				const response = await fetch(uri);
 				if(!response.ok){
 					console.log('Error: ', response.status, response.statusText);
 					return
@@ -39,14 +36,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 		
 				const datos = await response.json();
 				setStore({ personajes: datos.results });
+				localStorage.setItem( 'personajes', JSON.stringify(datos.results) );
 			},
 			getDetallePersonaje: async () => {
 				const uri = `${getStore().hostStarWars}/people/${getStore().idPersonaje}`;
-				const options = {
-					method: 'GET'
-				};
-				
-				const response = await fetch(uri, options);
+				const response = await fetch(uri);
 				if(!response.ok){
 					console.log('Error: ', response.status, response.statusText);
 					return
@@ -56,12 +50,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ detallePersonaje: datos.result.properties });
 			},
 			getPlanetas: async () => {
-				const uri = `${getStore().hostStarWars}/planets`;
-				const options = {
-					method: 'GET'
-				};
-				
-				const response = await fetch(uri, options);
+				const uri = `${getStore().hostStarWars}/planets`;			
+				const response = await fetch(uri);
 				if(!response.ok){
 					console.log('Error: ', response.status, response.statusText);
 					return
@@ -69,14 +59,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 		
 				const datos = await response.json();
 				setStore({ planetas: datos.results });
+				localStorage.setItem( 'planetas', JSON.stringify(datos.results) );
 			},
 			getDetallePlaneta: async () => {
 				const uri = `${getStore().hostStarWars}/planets/${getStore().idPlaneta}`;
-				const options = {
-					method: 'GET'
-				};
-				
-				const response = await fetch(uri, options);
+				const response = await fetch(uri);
 				if(!response.ok){
 					console.log('Error: ', response.status, response.statusText);
 					return
@@ -87,11 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			getNaves: async () => {
 				const uri = `${getStore().hostStarWars}/starships`;
-				const options = {
-					method: 'GET'
-				};
-				
-				const response = await fetch(uri, options);
+				const response = await fetch(uri);
 				if(!response.ok){
 					console.log('Error: ', response.status, response.statusText);
 					return
@@ -99,14 +82,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 		
 				const datos = await response.json();
 				setStore({ naves: datos.results });
+				localStorage.setItem( 'naves', JSON.stringify(datos.results) );
 			},
 			getDetalleNave: async () => {
 				const uri = `${getStore().hostStarWars}/starships/${getStore().idNave}`;
-				const options = {
-					method: 'GET'
-				};
-				
-				const response = await fetch(uri, options);
+				const response = await fetch(uri);
 				if(!response.ok){
 					console.log('Error: ', response.status, response.statusText);
 					return
@@ -115,13 +95,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const datos = await response.json();
 				setStore({ detalleNave: datos.result.properties });
 			},
+			addFavorito: (favorito) => {
+				setStore({ favoritos: [...getStore().favoritos, favorito] })
+			},
+			deleteFavorito: (favorito) => {
+
+			},
 			getContactos: async () => {
 				const uri = `${getStore().hostContacto}/agendas/${getStore().usuario.usuario}`;
-				const options = {
-					method: 'GET'
-				};
-				
-				const response = await fetch(uri, options);
+				const response = await fetch(uri);
 				if(!response.ok){
 					console.log('Error: ', response.status, response.statusText);
 					return
@@ -131,7 +113,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ contactos: datos.contacts })
 			},
 			addContacto: async (dataToSend) => {
-				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}/contacts`;
+				const uri = `${getStore().hostContacto}/agendas/${getStore().usuario.usuario}/contacts`;
 				const options = {
 					method: 'POST',
 					headers: {
@@ -149,7 +131,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().getContactos();
 			},
 			editarContacto: async (dataToEdit) => {
-				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}/contacts/${getStore().contactoParaEditar.id}`;
+				const uri = `${getStore().hostContacto}/agendas/${getStore().usuario.usuario}/contacts/${getStore().contactoParaEditar.id}`;
 				const options = {
 					method: 'PUT',
 					headers: {
@@ -167,7 +149,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().getContactos();
 			},
 			deleteContactos: async (idContacto) => {
-				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}/contacts/${idContacto}`;
+				const uri = `${getStore().hostContacto}/agendas/${getStore().usuario.usuario}/contacts/${idContacto}`;
 				const options = {
 					method: 'DELETE'
 				};
