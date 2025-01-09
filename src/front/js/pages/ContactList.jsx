@@ -59,7 +59,7 @@ export const ContactList = () => {
                                 <button type="submit" onClick={() => handleEdit(item)} className="btn btn-secondary me-2 m-auto">
                                     <i className="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button type="submit" onClick={() => handleDelete(item.id)} className="btn btn-danger m-auto">
+                                <button type="reset" onClick={() => handleDelete(item.id)} className="btn btn-danger m-auto">
                                     <i className="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>

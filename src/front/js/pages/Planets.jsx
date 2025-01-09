@@ -4,13 +4,21 @@ import { useNavigate } from "react-router-dom";
 
 export const Planets = () => {
     const { store } = useContext(Context);
-        const navigate = useNavigate();
+    const navigate = useNavigate();
     
-        const handleDetail = (idPlaneta) => {
-            store.idPlaneta = idPlaneta;
-            navigate('/planets/detail')
-        }
+    const handleDetail = (idPlaneta) => {
+        store.idPlaneta = idPlaneta;
+        navigate('/planets/detail')
+    }
 
+    const handleImagen = (event) => {
+        event.target.src = 'https://starwars-visualguide.com/assets/img/big-placeholder.jpg'
+    }
+
+    const handleFavorito = (favoritoActual) => {
+        actions.addFavorito(favoritoActual);
+    }
+    
     return (
         <div className="container p-5">
             <div className="bg-dark">
@@ -20,12 +28,12 @@ export const Planets = () => {
                         {store.planetas.map((item) =>
                             <div className="col my-5">
                                 <div className="card" style={{width: '12rem'}}>
-                                    <img src={'https://starwars-visualguide.com/assets/img/planets/'+item.uid+'.jpg'} className="card-img-top" alt="imagen" />
+                                    <img src={'https://starwars-visualguide.com/assets/img/planets/'+item.uid+'.jpg'} className="card-img-top" alt="imagen" onError={handleImagen} />
                                     <div className="card-body">
                                         <h6 className="card-title">{item.name}</h6>
                                         <div className="d-flex justify-content-between">
-                                            <button onClick={() => handleDetail(item.uid)} className="btn btn-secondary">Details</button>
-                                            <button type="button" className="btn btn-outline-warning"><i className="fa-regular fa-heart"></i></button>
+                                            <button onClick={() => handleDetail(item.uid)} type="button" className="btn btn-secondary">Details</button>
+                                            <button onClick={() => handleFavorito(item.name)} type="button" className="btn btn-outline-warning"><i className="fa-regular fa-heart"></i></button>
                                         </div>
                                     </div>
                                 </div>
