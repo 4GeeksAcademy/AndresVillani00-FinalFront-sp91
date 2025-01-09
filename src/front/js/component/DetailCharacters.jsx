@@ -1,10 +1,8 @@
 import React, { useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router-dom";
 
-export const Detail = () => {
+export const DetailCharacters = () => {
     const { store, actions } = useContext(Context);
-    const navigate = useNavigate();
 
     useEffect(() => {
             actions.getDetallePersonaje();
@@ -20,7 +18,7 @@ export const Detail = () => {
                         </div>
                         <div className="col-md-8">
                             <div className="card-body">
-                                <h5 className="card-title">{store.detallePersonaje.name}</h5>
+                                <h5 className="card-title text-center">{store.detallePersonaje.name}</h5>
                                 <p className="card-text"><strong>Height: </strong>{store.detallePersonaje.height}.</p>
                                 <p className="card-text"><strong>Mass: </strong>{store.detallePersonaje.mass}.</p>
                                 <p className="card-text"><strong>Hair color: </strong>{store.detallePersonaje.hair_color}.</p>
