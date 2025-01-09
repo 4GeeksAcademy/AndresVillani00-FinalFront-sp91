@@ -1,6 +1,9 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			isLogged : false,
+			usuario: {},
+			usuarioActual: {},
 			personajes: [],
 			idPersonaje: '',
 			detallePersonaje: {},
@@ -14,9 +17,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			contactoParaEditar: {},
 			hostStarWars: 'https://www.swapi.tech/api',
 			hostContacto: 'https://playground.4geeks.com/contact',
-    		slug: 'AndresVillani00'
 		},
 		actions: {
+			setIsLogged: (value) => {
+				setStore({ isLogged : value })
+			},
+			setUser: (usuarioActual) => {
+				setStore({ usuario: usuarioActual })
+			},
 			getPersonajes: async () => {
 				const uri = `${getStore().hostStarWars}/people`;
 				const options = {
@@ -108,7 +116,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ detalleNave: datos.result.properties });
 			},
 			getContactos: async () => {
-				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}`;
+				const uri = `${getStore().hostContacto}/agendas/${getStore().usuario.usuario}`;
 				const options = {
 					method: 'GET'
 				};

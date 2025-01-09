@@ -1,19 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 
 export const Characters = () => {
-    const { store, actions } = useContext(Context);
+    const { store } = useContext(Context);
     const navigate = useNavigate();
 
     const handleDetail = (idPersonaje) => {
         store.idPersonaje = idPersonaje;
         navigate('/characters/detail')
     }
-
-    useEffect(() => {
-        actions.getPersonajes();
-    }, [])
 
     return (
         <div className="container p-5">

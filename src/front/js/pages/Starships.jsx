@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 
 export const Starships = () => {
-    const { store, actions } = useContext(Context);
+    const { store } = useContext(Context);
     const navigate = useNavigate();
 
     const handleDetail = (idNave) => {
@@ -11,9 +11,6 @@ export const Starships = () => {
         navigate('/starships/detail')
     }
 
-    useEffect(() => {
-        actions.getNaves();
-    }, [])
 
     return (
         <div className="container p-5">

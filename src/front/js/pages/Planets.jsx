@@ -1,19 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 
 export const Planets = () => {
-    const { store, actions } = useContext(Context);
+    const { store } = useContext(Context);
         const navigate = useNavigate();
     
         const handleDetail = (idPlaneta) => {
             store.idPlaneta = idPlaneta;
             navigate('/planets/detail')
         }
-    
-        useEffect(() => {
-            actions.getPlanetas();
-        }, [])
 
     return (
         <div className="container p-5">
