@@ -26,6 +26,11 @@ export const Navbar = () => {
 						</Link>
 					</li>
 					<li className="nav-item">
+						<Link to="/starships" className="text-decoration-none">
+							<span className="navbar-brand mb-0 h1 text-secondary">Starships</span>
+						</Link>
+					</li>
+					<li className="nav-item">
 						<Link to="/list" className="text-decoration-none">
 							<span className="navbar-brand mb-0 h1 text-secondary">To do List</span>
 						</Link>

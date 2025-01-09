@@ -27,7 +27,6 @@ export const DetailPlanets = () => {
                                 <p className="card-text"><strong>Climate: </strong>{store.detallePlaneta.climate}.</p>
                                 <p className="card-text"><strong>Terrain: </strong>{store.detallePlaneta.terrain}.</p>
                                 <p className="card-text"><strong>Surface water: </strong>{store.detallePlaneta.surface_water}.</p>
-                                <p className="card-text"><strong>Created: </strong>{store.detallePlaneta.created}.</p>
                             </div>
                         </div>
                     </div>

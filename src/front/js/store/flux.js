@@ -7,6 +7,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			planetas: [],
 			idPlaneta: '',
 			detallePlaneta: {},
+			naves: [],
+			idNave: '',
+			detalleNave: {},
 			contactos: [],
 			contactoParaEditar: {},
 			hostStarWars: 'https://www.swapi.tech/api',
@@ -73,6 +76,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 		
 				const datos = await response.json();
 				setStore({ detallePlaneta: datos.result.properties });
+			},
+			getNaves: async () => {
+				const uri = `${getStore().hostStarWars}/starships`;
+				const options = {
+					method: 'GET'
+				};
+				
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+		
+				const datos = await response.json();
+				setStore({ naves: datos.results });
+			},
+			getDetalleNave: async () => {
+				const uri = `${getStore().hostStarWars}/starships/${getStore().idNave}`;
+				const options = {
+					method: 'GET'
+				};
+				
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+		
+				const datos = await response.json();
+				setStore({ detalleNave: datos.result.properties });
 			},
 			getContactos: async () => {
 				const uri = `${getStore().hostContacto}/agendas/${getStore().slug}`;
