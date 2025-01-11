@@ -65,13 +65,16 @@ export const Navbar = () => {
 						<div></div>
 					}
 					</ul>
-					<div class="dropdown me-2">
-						<button class="btn btn-secondary dropdown-toggle text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<div className="dropdown me-2">
+						<button className="btn btn-secondary dropdown-toggle text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Favoritos <i className="fa-regular fa-heart me-2"></i>
 						</button>
-						<ul class="dropdown-menu">
+						<ul className="dropdown-menu">
 							{store.favoritos.map((item) =>
-								<li className="list-group-item">{item} <i className="fa-solid fa-trash-can text-danger" onClick={() => handleFavorito(item)}></i></li>
+								<div className="d-flex justify-content-between p-2">
+									<li key={item.uid} >{item.name} </li>
+									<i className="fa-solid fa-trash-can text-danger m-auto" onClick={() => handleFavorito(item)}></i>
+								</div>
 							)}
 						</ul>
 					</div>

@@ -1,7 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			isLogged : false,
+			isLogged: false,
 			usuario: {},
 			usuarioActual: {},
 			personajes: [],
@@ -14,6 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			idNave: '',
 			detalleNave: {},
 			favoritos: [],
+			favoritoActual: {},
 			contactos: [],
 			contactoParaEditar: {},
 			hostStarWars: 'https://www.swapi.tech/api',
@@ -96,10 +97,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ detalleNave: datos.result.properties });
 			},
 			addFavorito: (favorito) => {
-				setStore({ favoritos: [...getStore().favoritos, favorito] })
+				setStore({ favoritos: [...getStore().favoritos, favorito] });
 			},
 			deleteFavorito: (favorito) => {
-
+				setStore({ favoritos: getStore().favoritos.filter((fav) => fav !=  favorito) })
 			},
 			getContactos: async () => {
 				const uri = `${getStore().hostContacto}/agendas/${getStore().usuario.usuario}`;

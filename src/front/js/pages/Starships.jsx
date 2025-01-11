@@ -3,7 +3,7 @@ import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 
 export const Starships = () => {
-    const { store } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const navigate = useNavigate();
 
     const handleDetail = (idNave) => {
@@ -15,8 +15,12 @@ export const Starships = () => {
         event.target.src = 'https://starwars-visualguide.com/assets/img/big-placeholder.jpg'
     }
 
-    const handleFavorito = (favoritoActual) => {
+    const handleAddFavorito = (favoritoActual) => {
         actions.addFavorito(favoritoActual);
+    }
+
+    const handleDeleteFavorito = (favoritoActual) => {
+        actions.deleteFavorito(favoritoActual);
     }
 
     return (
@@ -33,7 +37,12 @@ export const Starships = () => {
                                         <h6 className="card-title">{item.name}</h6>
                                         <div className="d-flex justify-content-between">
                                             <button onClick={() => handleDetail(item.uid)} type="button" className="btn btn-secondary">Details</button>
-                                            <button onClick={() => handleFavorito(item.name)} type="button" className="btn btn-outline-warning"><i className="fa-regular fa-heart"></i></button>
+                                            {
+                                                store.favoritos.find((favoritoActual) => favoritoActual.name == item.name) ?
+                                                <button onClick={() => handleDeleteFavorito(item)} type="button" className='btn btn-warning'><i className="fa-regular fa-heart"></i></button>
+                                                :
+                                                <button onClick={() => handleAddFavorito(item)} type="button" className='btn btn-outline-warning'><i className="fa-regular fa-heart"></i></button>
+                                            }
                                         </div>
                                     </div>
                                 </div>
