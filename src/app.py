@@ -8,6 +8,14 @@ from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
+from api.endpoints.userRoutes import users_api
+from api.endpoints.postRoutes import post_api
+from api.endpoints.mediasRoutes import medias_api
+from api.endpoints.commentsRoutes import comments_api
+from api.endpoints.followersRoutes import followers_api
+from api.endpoints.charactersRoutes import characters_api
+from api.endpoints.planetsRoutes import planets_api
+from api.endpoints.favoritesRoutes import favorites_api
 from api.admin import setup_admin
 from api.commands import setup_commands
 # from models import Person
@@ -31,6 +39,14 @@ db.init_app(app)
 setup_admin(app)  # add the admin
 setup_commands(app)  # add the admin
 app.register_blueprint(api, url_prefix='/api')  # Add all endpoints form the API with a "api" prefix
+app.register_blueprint(users_api, url_prefix='/usersApi')
+app.register_blueprint(post_api, url_prefix='/postApi')
+app.register_blueprint(medias_api, url_prefix='/medias_api')
+app.register_blueprint(comments_api, url_prefix='/commentsApi')
+app.register_blueprint(followers_api, url_prefix='/followersApi')
+app.register_blueprint(characters_api, url_prefix='/charactersApi')
+app.register_blueprint(planets_api, url_prefix='/planetsApi')
+app.register_blueprint(favorites_api, url_prefix='/favoritesApi')
 
 
 # Handle/serialize errors like a JSON object
