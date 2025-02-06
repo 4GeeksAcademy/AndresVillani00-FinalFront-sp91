@@ -16,7 +16,44 @@ def users():
     response_body = {}
     if request.method == 'GET':
         rows = db.session.execute(db.select(Users)).scalars()
-        result = [ row.serialize() for row in rows ]
+        list_users = [ row.serialize() for row in rows ]
         response_body['message'] = f'Listado de usuarios'
-        response_body['results'] = result
+        response_body['results'] = list_users
+        return response_body, 200
+    if request.method == 'POST':
+        data = request.json
+        row = Users(email=data.get('email'),
+                    password=data.get('password'),
+                    is_active=data.get('is_active'),
+                    first_name=data.get('first_name'),
+                    last_name=data.get('last_name'))
+        response_body['message'] = f'Agregar nueva publicacion'
+        response_body['results'] = row.serialize()
+        return response_body, 200  
+    
+
+@users_api.route('/users/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+def user(id):
+    response_body = {}
+    row = db.session.execute(db.select(Users).where(Users.id == id)).scalars()
+    if not row:
+        response_body['message'] = f'El Usuario de id: {id}, no existe'
+    if request.method == 'GET':
+        response_body['message'] = f'Usuario con id: {id}'
+        response_body["results"] = row.serialize()
+        return response_body, 200
+    if request.method == 'PUT':
+        data = request.json
+        row.email=data.get('email'),
+        row.password=data.get('password'),
+        row.is_active=data.get('is_active'),
+        row.first_name=data.get('first_name'),
+        row.last_name=data.get('last_name')
+        response_body['message'] = f'Usuario con id: {id}. Actualizado'
+        response_body["results"] = row.serialize()
+        return response_body, 200
+    if request.method == 'DELETE':
+        db.session.delete(row)
+        db.session.commit()
+        response_body['message'] = f'Usuario con id: {id}. Eliminad'
         return response_body, 200

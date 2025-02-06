@@ -81,6 +81,11 @@ class Followers(db.Model):
     follower_to = db.relationship('Users', foreign_keys=(follower_id), backref=db.backref('followers_to'), lazy='select')
     following_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     following_to = db.relationship('Users', foreign_keys=(following_id), backref=db.backref('followings_to'), lazy='select')
+    
+    def serialize(self):
+        return {"id": self.id,
+                "follower_id": self.follower_id,
+                "following_id": self.following_id}
 
 
 class Planets(db.Model):
@@ -104,6 +109,11 @@ class PlanetFavorites(db.Model):
     planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'))
     planet_to = db.relationship('Planets', foreign_keys=(planet_id), backref=db.backref('planet_to'), lazy='select')
 
+    def serialize(self):
+        return {"id": self.id,
+                "user_id": self.user_id,
+                "planet_id": self.planet_id}
+
 
 class Characters(db.Model):
     __tablename__ = 'characters'
@@ -125,3 +135,8 @@ class CharacterFavorites(db.Model):
     user_to = db.relationship('Users', foreign_keys=(user_id), backref=db.backref('character_favorite_to'), lazy='select')
     character_id = db.Column(db.Integer, db.ForeignKey('characters.id'))
     character_to = db.relationship('Characters', foreign_keys=(character_id), backref=db.backref('character_to'), lazy='select')
+
+    def serialize(self):
+        return {"id": self.id,
+                "user_id": self.user_id,
+                "character_id": self.character_id}

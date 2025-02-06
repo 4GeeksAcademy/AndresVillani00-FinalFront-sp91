@@ -46,7 +46,7 @@ def post(id):
     if request.method == 'PUT':
         data = request.json
         row.title=data.get('title'),
-        row.description=data.get('email'),
+        row.description=data.get('description'),
         row.body=data.get('body', 'BODY por defecto'),
         row.date=data.get('date'),
         row.image_url=data.get('image_url'),
