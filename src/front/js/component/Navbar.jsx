@@ -9,10 +9,11 @@ export const Navbar = () => {
 
 	const handleLogin = () => {
 		if(store.isLogged) {
-			actions.setIsLogged(false);
+			actions.setIsLogged(false)
 			actions.setUser({});
 			navigate('/');
 		} else {
+			actions.logout();
 			navigate('/login');
 		}
 	}
@@ -22,68 +23,71 @@ export const Navbar = () => {
 	}
 
 	return (
-		<nav className="navbar navbar-expand-lg bg-dark">
-		<div className="container-fluid">
-			<div className="col col-md-4">
-				<Link to="/" className="text-decoration-none">
-					<img src={starWars} className="img-fluid rounded-start w-25" alt="starWars" />
-				</Link>
-			</div>
-			<div className="d-flex">
-				<div className="collapse navbar-collapse text-end" id="navbarSupportedContent">
-					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
-					<li className="nav-item">
-						<Link to="/characters" className="text-decoration-none">
-							<span className="navbar-brand mb-0 h1 text-secondary">Characters</span>
-						</Link>
-					</li>
-					<li className="nav-item">
-						<Link to="/planets" className="text-decoration-none">
-							<span className="navbar-brand mb-0 h1 text-secondary">Planets</span>
-						</Link>
-					</li>
-					<li className="nav-item">
-						<Link to="/starships" className="text-decoration-none">
-							<span className="navbar-brand mb-0 h1 text-secondary">Starships</span>
-						</Link>
-					</li>
-					{
-						store.isLogged ?
-						<div className="d-flex">
-							<li className="nav-item">
-								<Link to="/list" className="text-decoration-none">
-									<span className="navbar-brand mb-0 h1 text-secondary">To do List</span>
-								</Link>
-							</li>
-							<li className="nav-item">
-								<Link to="/contact" className="text-decoration-none">
-									<span className="navbar-brand mb-0 h1 text-secondary">Contact List</span>
-								</Link>
-							</li>
-						</div>
-						:
-						<div></div>
-					}
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-fluid">
+				<div className="col col-md-4">
+					<Link to="/" className="text-decoration-none">
+						<img src={starWars} className="img-fluid rounded-start w-25" alt="starWars" />
+					</Link>
+				</div>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div className="d-flex">
+					<div class="collapse navbar-collapse text-end" id="navbarNav">
+					<ul class="navbar-nav">
+						<li className="nav-item">
+							<Link to="/characters" className="text-decoration-none">
+								<span className="navbar-brand mb-0 h1 text-secondary">Characters</span>
+							</Link>
+						</li>
+						<li className="nav-item">
+							<Link to="/planets" className="text-decoration-none">
+								<span className="navbar-brand mb-0 h1 text-secondary">Planets</span>
+							</Link>
+						</li>
+						<li className="nav-item">
+							<Link to="/starships" className="text-decoration-none">
+								<span className="navbar-brand mb-0 h1 text-secondary">Starships</span>
+							</Link>
+						</li>
+						{
+							store.isLogged ?
+							<div className="d-flex">
+								<li className="nav-item">
+									<Link to="/list" className="text-decoration-none">
+										<span className="navbar-brand mb-0 h1 text-secondary">To do List</span>
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link to="/contact" className="text-decoration-none">
+										<span className="navbar-brand mb-0 h1 text-secondary">Contact List</span>
+									</Link>
+								</li>
+							</div>
+							:
+							<div></div>
+						}
 					</ul>
 					<div className="dropdown me-2">
-						<button className="btn btn-secondary dropdown-toggle text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Favoritos <i className="fa-regular fa-heart me-2"></i>
+							<button className="btn btn-secondary dropdown-toggle text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Favoritos <i className="fa-regular fa-heart me-2"></i>
+							</button>
+							<ul className="dropdown-menu">
+								{store.favoritos.map((item) =>
+									<div className="d-flex justify-content-between p-2">
+										<li key={item.uid} >{item.name} </li>
+										<i className="fa-solid fa-trash-can text-danger m-auto" onClick={() => handleFavorito(item)}></i>
+									</div>
+								)}
+							</ul>
+						</div>
+						<button onClick={() => handleLogin()} className="btn btn-outline-success">
+							{store.isLogged ? 'Logout' : 'Login'}
 						</button>
-						<ul className="dropdown-menu">
-							{store.favoritos.map((item) =>
-								<div className="d-flex justify-content-between p-2">
-									<li key={item.uid} >{item.name} </li>
-									<i className="fa-solid fa-trash-can text-danger m-auto" onClick={() => handleFavorito(item)}></i>
-								</div>
-							)}
-						</ul>
 					</div>
-					<button onClick={() => handleLogin()} className="btn btn-outline-success">
-						{store.isLogged ? 'Logout' : 'Login'}
-					</button>
 				</div>
 			</div>
-		</div>
-	  </nav>
+		</nav>
 	);
 };

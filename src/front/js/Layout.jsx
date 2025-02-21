@@ -22,6 +22,7 @@ import { Planets } from "./pages/Planets.jsx";
 import { DetailPlanets } from "./component/DetailPlanets.jsx";
 import { Starships } from "./pages/Starships.jsx";
 import { DetailStarships } from "./component/DetailStarships.jsx";
+import { Alert } from "./component/Alert.jsx";
 
 //create your first component
 const Layout = () => {
@@ -36,6 +37,7 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    <Alert />
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Login />} path="/login" />

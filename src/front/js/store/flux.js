@@ -19,13 +19,77 @@ const getState = ({ getStore, getActions, setStore }) => {
 			contactoParaEditar: {},
 			hostStarWars: 'https://www.swapi.tech/api',
 			hostContacto: 'https://playground.4geeks.com/contact',
+			alert: {text:'', background:'primary', visible: false}
 		},
 		actions: {
+			login: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/login`;	
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					if(response.status == 401){
+						setStore({alert: {text:'Email o Contraseña incorrectos', background:'danger', visible: true}})
+					}
+					return
+				}
+
+				const datos = await response.json();
+				setStore({
+					isLogged: true,
+					usuario: datos.results
+				})
+				localStorage.setItem( 'token', datos.access_token );
+			},
+			logout: () => {
+				setStore({
+					isLogged: false,
+					usuario: {}
+				})
+				localStorage.removeItem('token')
+			},
 			setIsLogged: (value) => {
 				setStore({ isLogged : value })
 			},
+			getUser: async (id) => {
+				const uri = `${process.env.BACKEND_URL}/users_api/users/${id}`;
+				const response = await fetch(uri);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+
+				const datos = await response.json()
+				console.log(datos)
+			},
+			accessProtected: async () => {
+				const uri = `${process.env.BACKEND_URL}/api/protected`;
+				const options = {
+					method: 'GET',
+					headers: {
+						"Authorization": `Bearer ${localStorage.getItem('token')}`
+					}
+				};
+				const response = await fetch(uri, options);
+				if(!response.ok){
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+
+				const datos = await response.json()
+				console.log(datos)
+				console.log(localStorage.getItem('token'))
+			},
 			setUser: (usuarioActual) => {
 				setStore({ usuario: usuarioActual })
+			},
+			setAlert: () => {
+				setStore({alert: {text:'Email o Contraseña incorrectos', background:'danger', visible: false}})
 			},
 			getPersonajes: async () => {
 				const uri = `${getStore().hostStarWars}/people`;	
