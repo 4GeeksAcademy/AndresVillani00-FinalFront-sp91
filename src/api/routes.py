@@ -4,6 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt
 from flask_jwt_extended import jwt_required
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -32,14 +33,16 @@ def login():
     row = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
     if not row:
         response_body['message'] = f'El usuario no existe'
-        return response_body, 404
-    if email != "test" or password != "test":
-        response_body['message'] = f'Bad username or password'
         return response_body, 401
-
-    access_token = create_access_token(identity=email)
-    response_body['message'] = f'User logged'
+    user = row.serialize()
+    claims = {'user_id': user['id'],
+              'is_active': user['is_active'],
+              'first_name': user['first_name'],
+              'last_name': user['last_name']}
+    access_token = create_access_token(identity=email, additional_claims=claims)
     response_body['access_token'] = access_token
+    response_body['message'] = f'User logged'
+    response_body['results'] = user
     return response_body, 200
 
 
@@ -51,5 +54,7 @@ def protected():
     response_body = {}
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
+    additional_claims = get_jwt()
     response_body['message'] = f'Is logged by: {current_user}'
+    response_body['datos adicionales'] = additional_claims
     return response_body, 200

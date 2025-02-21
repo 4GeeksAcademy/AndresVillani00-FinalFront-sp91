@@ -30,7 +30,7 @@ export const Planets = () => {
                 <div className="container d-flex p-5">
                     <div className="row">
                         {store.planetas.map((item) =>
-                            <div className="col my-5">
+                            <div key={item.uid} className="col my-5">
                                 <div className="card" style={{width: '12rem'}}>
                                     <img src={'https://starwars-visualguide.com/assets/img/planets/'+item.uid+'.jpg'} className="card-img-top" alt="imagen" onError={handleImagen} />
                                     <div className="card-body">

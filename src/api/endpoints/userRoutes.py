@@ -3,6 +3,8 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt
 from flask_cors import CORS
 from api.models import db, Users
 
@@ -32,16 +34,31 @@ def users():
         return response_body, 200  
     
 
-@users_api.route('/users/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+@users_api.route('/users/<int:id>', methods=['GET'])
+@jwt_required()
+def user_get(id):
+    response_body = {}
+    additional_claims = get_jwt()
+    if id != additional_claims['id']:
+        response_body['message'] = f'No tiene autorizacion el Usuario: {id}'
+        return response_body, 200
+    row = db.session.execute(db.select(Users).where(Users.id == id)).scalar()
+    if not row:
+        response_body['message'] = f'El Usuario de id: {id}, no existe'
+        return response_body, 401
+    if request.method == 'GET':
+        response_body['message'] = f'Usuario con id: {id}'
+        response_body["results"] = row.serialize()
+        return response_body, 200
+
+
+@users_api.route('/users/<int:id>', methods=['PUT', 'DELETE'])
 def user(id):
     response_body = {}
     row = db.session.execute(db.select(Users).where(Users.id == id)).scalars()
     if not row:
         response_body['message'] = f'El Usuario de id: {id}, no existe'
-    if request.method == 'GET':
-        response_body['message'] = f'Usuario con id: {id}'
-        response_body["results"] = row.serialize()
-        return response_body, 200
+        return response_body, 401
     if request.method == 'PUT':
         data = request.json
         row.email=data.get('email'),
